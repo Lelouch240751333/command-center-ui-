@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b0812">
+<title>ChatGPT Command Center — UI Concept</title>
+<style>
+:root{--bg:#0b0812;--panel:#12101c;--panel2:#191428;--line:#302044;--purple:#8b5cf6;--purple2:#a78bfa;--text:#f5f1ff;--muted:#a59ab9;--green:#67d8b0}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 20% -10%,#2b1550 0,transparent 45%),var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+button,input{font:inherit}button{cursor:pointer;color:inherit}.app{max-width:1440px;margin:auto;min-height:100vh;display:grid;grid-template-columns:270px 1fr}
+.sidebar{border-right:1px solid var(--line);background:#0e0b16eF;padding:20px 14px;display:flex;flex-direction:column;gap:18px;min-height:100vh}
+.brand{display:flex;align-items:center;gap:10px;padding:3px 8px 12px}.logo{width:38px;height:38px;border-radius:13px;background:linear-gradient(145deg,#a855f7,#4c1d95);display:grid;place-items:center;box-shadow:0 0 25px #8b5cf633;font-size:22px}.brand strong{font-size:17px}.brand small{display:block;color:var(--muted);font-size:11px;letter-spacing:.08em}
+.newchat{border:1px solid #7047a3;background:linear-gradient(110deg,#39205a,#21162f);padding:12px 14px;border-radius:13px;text-align:left}
+.search{width:100%;background:#151120;border:1px solid var(--line);border-radius:11px;padding:10px 12px;color:var(--text);outline:none}.search:focus,.composer input:focus{border-color:var(--purple)}
+.nav{display:grid;gap:5px}.nav button,.chatitem{border:0;background:transparent;text-align:left;padding:10px 12px;border-radius:10px;color:#c9bfd8;display:flex;align-items:center;gap:10px}.nav button.active,.nav button:hover,.chatitem:hover{background:#2a1b40;color:white}.nav .ico{width:22px;text-align:center;color:var(--purple2)}
+.sectionlabel{color:#8d819f;font-size:11px;text-transform:uppercase;letter-spacing:.12em;padding:0 10px;margin:6px 0 2px}.chatlist{display:grid;gap:3px}.chatitem{font-size:13px;padding:8px 10px}.chatitem span:first-child{color:#9b8cb5}
+.profile{margin-top:auto;border-top:1px solid var(--line);padding:15px 6px 0;display:flex;gap:10px;align-items:center}.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#7543b8,#24204b);display:grid;place-items:center;border:1px solid #7752a2}.profile small{display:block;color:var(--muted)}
+.main{min-width:0;display:flex;flex-direction:column;min-height:100vh}.topbar{height:66px;border-bottom:1px solid #241a33;display:flex;align-items:center;justify-content:space-between;padding:0 26px;background:#0b0812b8;backdrop-filter:blur(12px);position:sticky;top:0;z-index:3}.top-left{display:flex;align-items:center;gap:12px}.topbar h1{font-size:16px;margin:0}.model{font-size:12px;color:var(--muted);border:1px solid var(--line);padding:5px 9px;border-radius:8px}.iconbtn{border:1px solid var(--line);background:#171020;border-radius:10px;padding:8px 11px}.content{width:min(920px,100%);margin:0 auto;padding:30px 24px 28px;flex:1}.welcome{padding:26px 0 20px}.eyebrow{color:var(--purple2);font-size:12px;letter-spacing:.16em;text-transform:uppercase}.welcome h2{font-size:clamp(27px,4vw,42px);line-height:1.15;margin:8px 0 10px;letter-spacing:-.03em}.welcome h2 em{font-style:normal;color:#b89aff}.welcome p{color:var(--muted);margin:0;max-width:590px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:20px 0 26px}.suggest{background:linear-gradient(145deg,#171222,#100d18);border:1px solid var(--line);border-radius:15px;padding:16px;text-align:left;transition:.18s}.suggest:hover,.project:hover{border-color:#7950b1;transform:translateY(-1px)}.suggest .big{font-size:21px;margin-bottom:10px}.suggest strong{display:block;font-size:14px}.suggest small{display:block;color:var(--muted);margin-top:4px}
+.chat{display:grid;gap:18px;padding:12px 0}.msg{display:flex;gap:12px;align-items:flex-start}.msg .bubble{max-width:90%;padding:14px 16px;border:1px solid #292039;border-radius:4px 16px 16px 16px;background:#13101c}.msg.user{justify-content:flex-end}.msg.user .bubble{background:#30204b;border-color:#4d3474;border-radius:16px 4px 16px 16px}.msg .avatar{flex:0 0 36px}.bubble p{margin:0 0 9px}.bubble p:last-child{margin-bottom:0}.bubble ul{margin:8px 0;padding-left:20px;color:#d7cfe5}.composer-wrap{position:sticky;bottom:0;padding:14px 24px 22px;background:linear-gradient(transparent,#0b0812 25%);z-index:2}.composer{max-width:870px;margin:auto;display:flex;gap:10px;align-items:center;background:#15101f;border:1px solid #493064;border-radius:17px;padding:9px 10px 9px 15px;box-shadow:0 8px 40px #0006}.composer input{flex:1;min-width:0;background:transparent;border:0;outline:none;color:var(--text);padding:8px}.composer button{border:0;border-radius:11px;background:linear-gradient(135deg,#a855f7,#6d28d9);padding:10px 14px;font-weight:700}.hint{text-align:center;color:#786d8b;font-size:11px;margin-top:9px}
+.page{display:none}.page.active{display:block}.page-title{font-size:28px;margin:5px 0}.sub{color:var(--muted);margin-top:0}.project-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:22px}.project{border:1px solid var(--line);background:linear-gradient(145deg,#171222,#100d18);border-radius:16px;padding:18px;transition:.18s}.project .picon{width:42px;height:42px;border-radius:13px;background:#2b1c40;display:grid;place-items:center;font-size:21px;margin-bottom:13px}.project p{color:var(--muted);font-size:13px;margin:5px 0 0}.pill{display:inline-block;font-size:11px;color:#d9c9ff;background:#2b1b42;border:1px solid #493064;border-radius:99px;padding:3px 8px;margin-top:13px}.settingrow{display:flex;align-items:center;justify-content:space-between;gap:15px;border-bottom:1px solid #282035;padding:17px 0}.settingrow p{margin:3px 0 0;color:var(--muted);font-size:13px}.swatches{display:flex;gap:9px}.swatch{width:28px;height:28px;border-radius:50%;border:2px solid #716180}.swatch.selected{outline:2px solid #e9d5ff;outline-offset:3px}.empty{color:var(--muted);padding:24px 0}.mobile-menu{display:none}
+.toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:#26183a;border:1px solid #7950b1;padding:10px 15px;border-radius:12px;box-shadow:0 10px 30px #0008;z-index:9;display:none}.toast.show{display:block}
+@media(max-width:760px){.app{grid-template-columns:1fr}.sidebar{display:none;position:fixed;z-index:6;inset:0 auto 0 0;width:min(300px,86vw);min-height:100dvh;box-shadow:20px 0 80px #0009}.sidebar.open{display:flex}.mobile-menu{display:inline-block}.topbar{padding:0 14px;height:58px}.content{padding:20px 16px 24px}.welcome{padding-top:17px}.cards,.project-grid{grid-template-columns:1fr}.composer-wrap{padding:10px 12px 16px}.composer{gap:5px}.composer input{padding:7px 3px}.composer button{padding:10px 11px}.msg .bubble{max-width:100%}.topbar .model{display:none}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><div class="logo">✳</div><div><strong>Command Center</strong><small>THINK DEEPER · GO FURTHER</small></div></div>
+  <button class="newchat" id="newChat">＋ &nbsp; แชตใหม่</button>
+  <input class="search" id="chatSearch" placeholder="⌕  ค้นหาแชต..." aria-label="ค้นหาแชต">
+  <nav class="nav" aria-label="เมนูหลัก">
+    <button class="active" data-page="chat"><span class="ico">◉</span> แชต</button>
+    <button data-page="projects"><span class="ico">▣</span> Projects</button>
+    <button data-page="explore"><span class="ico">⌘</span> สำรวจ GPTs</button>
+    <button data-page="settings"><span class="ico">⚙</span> การตั้งค่า</button>
+  </nav>
+  <div><div class="sectionlabel">Pinned · แชตสำคัญ</div><div class="chatlist" id="chatList">
+    <button class="chatitem" data-title="Electrical Power"><span>ϟ</span> Electrical Power</button>
+    <button class="chatitem" data-title="Study HQ"><span>▤</span> Study HQ</button>
+    <button class="chatitem" data-title="INTJ Archive"><span>◉</span> INTJ Archive</button>
+    <button class="chatitem" data-title="Clean Energy"><span>✧</span> Clean Energy</button>
+    <button class="chatitem" data-title="GX Works3 — Conveyor"><span>⌁</span> GX Works3 — Conveyor</button>
+  </div></div>
+  <div class="profile"><div class="avatar">I</div><div><strong>Ice</strong><small>Command Center · UI Concept</small></div><span style="margin-left:auto;color:#9f8ab9">•••</span></div>
+</aside>
+<main class="main">
+  <header class="topbar"><div class="top-left"><button class="iconbtn mobile-menu" id="menuBtn" aria-label="เปิดเมนู">☰</button><h1 id="topTitle">ChatGPT</h1><span class="model">GPT · UI DEMO ▾</span></div><button class="iconbtn" id="themeBtn" title="สลับโทน">◐</button></header>
+  <section class="content">
+    <div class="page active" id="page-chat">
+      <div class="welcome"><div class="eyebrow">✦ PERSONAL AI WORKSPACE</div><h2>ยินดีต้อนรับกลับมา,<br><em>Ice.</em></h2><p>พื้นที่คิด วางแผน และสร้างสิ่งที่ยิ่งใหญ่ — จัดทุกเรื่องให้เป็นระบบในที่เดียว</p></div>
+      <div class="cards">
+        <button class="suggest" data-prompt="ช่วยสรุปหัวข้อไฟฟ้ากำลังให้เข้าใจง่าย"><div class="big">ϟ</div><strong>Electrical Lab</strong><small>ทบทวนไฟฟ้ากำลังและโจทย์คำนวณ</small></button>
+        <button class="suggest" data-prompt="ช่วยจัดแผนอ่านหนังสือที่ทำได้จริง"><div class="big">▤</div><strong>Study HQ</strong><small>จัดตารางเรียนและติดตามความคืบหน้า</small></button>
+        <button class="suggest" data-prompt="ช่วยคิดไอเดียคอนเทนต์ MBTI โทนลึกลับ"><div class="big">◉</div><strong>INTJ Archive</strong><small>ไอเดีย MBTI และคอนเทนต์โทนลึกลับ</small></button>
+        <button class="suggest" data-prompt="ช่วยระดมไอเดียพลังงานสะอาด"><div class="big">✧</div><strong>Clean Energy</strong><small>สำรวจแนวคิดพลังงานแห่งอนาคต</small></button>
+      </div>
+      <div id="messages" class="chat" aria-live="polite"></div>
+    </div>
+    <div class="page" id="page-projects">
+      <div class="eyebrow">WORKSPACE / 01</div><h2 class="page-title">Projects</h2><p class="sub">แยกงานตามเป้าหมาย แล้วกลับมาทำต่อได้ง่าย</p>
+      <div class="project-grid">
+        <div class="project"><div class="picon">ϟ</div><strong>Electrical Power</strong><p>ไฟฟ้ากำลัง · วงจร · มอเตอร์ · PLC</p><span class="pill">12 แชต</span></div>
+        <div class="project"><div class="picon">▤</div><strong>Study HQ</strong><p>การเรียน ตารางอ่านหนังสือ และสรุปบทเรียน</p><span class="pill">8 แชต</span></div>
+        <div class="project"><div class="picon">◉</div><strong>INTJ Archive</strong><p>MBTI · บุคลิกภาพ · คอนเทนต์</p><span class="pill">6 แชต</span></div>
+        <div class="project"><div class="picon">✧</div><strong>Clean Energy</strong><p>พลังงานสะอาดและแนวคิดโครงงาน</p><span class="pill">4 แชต</span></div>
+      </div>
+    </div>
+    <div class="page" id="page-explore">
+      <div class="eyebrow">DISCOVER / 02</div><h2 class="page-title">สำรวจเครื่องมือ</h2><p class="sub">ตัวอย่างหมวดเครื่องมือในต้นแบบนี้ ไม่ใช่รายการเชื่อมต่อจริง</p>
+      <div class="project-grid">
+        <div class="project"><div class="picon">✦</div><strong>Creative Studio</strong><p>ระดมไอเดียและช่วยร่างเนื้อหา</p><span class="pill">CREATIVE</span></div>
+        <div class="project"><div class="picon">⌘</div><strong>Code Lab</strong><p>ช่วยอ่านโค้ดและวางโครงงาน</p><span class="pill">DEVELOPER</span></div>
+        <div class="project"><div class="picon">◎</div><strong>Research Desk</strong><p>ช่วยวางแผนค้นคว้าและสรุปข้อมูล</p><span class="pill">RESEARCH</span></div>
+        <div class="project"><div class="picon">ϟ</div><strong>Electrical Tutor</strong><p>ฝึกทำโจทย์ไฟฟ้าทีละขั้น</p><span class="pill">LEARNING</span></div>
+      </div>
+    </div>
+    <div class="page" id="page-settings">
+      <div class="eyebrow">SYSTEM / 03</div><h2 class="page-title">การตั้งค่า UI</h2><p class="sub">ตั้งค่าของหน้าเดโมนี้เท่านั้น ไม่ได้เปลี่ยนแอป ChatGPT จริง</p>
+      <div class="settingrow"><div><strong>ธีมสี</strong><p>Deep purple · Command Center</p></div><div class="swatches"><button class="swatch selected" data-color="#8b5cf6" style="background:#8b5cf6" aria-label="ม่วง"></button><button class="swatch" data-color="#38bdf8" style="background:#38bdf8" aria-label="ฟ้า"></button><button class="swatch" data-color="#34d399" style="background:#34d399" aria-label="เขียว"></button></div></div>
+      <div class="settingrow"><div><strong>ความหนาแน่นของหน้าจอ</strong><p>เลย์เอาต์ปรับตามขนาดหน้าจอ</p></div><span class="pill">RESPONSIVE</span></div>
+      <div class="settingrow"><div><strong>เอฟเฟกต์เรืองแสง</strong><p>แสงม่วงแบบนุ่มนวล</p></div><button class="iconbtn" id="glowBtn">เปิดอยู่ ✓</button></div>
+      <div class="settingrow"><div><strong>ข้อมูลตัวอย่าง</strong><p>การสนทนาที่แสดงเป็นข้อความเดโมในเครื่อง</p></div><span style="color:var(--green)">LOCAL DEMO</span></div>
+    </div>
+  </section>
+  <div class="composer-wrap" id="composerWrap"><form class="composer" id="composer"><button type="button" class="iconbtn" id="plusBtn" aria-label="ตัวเลือกเพิ่มเติม">＋</button><input id="prompt" placeholder="ส่งข้อความถึง Command Center..." autocomplete="off" aria-label="ข้อความ"><button type="submit">ส่ง ↑</button></form><div class="hint">ต้นแบบ UI · ยังไม่ได้เชื่อมต่อ API หรือบัญชี ChatGPT</div></div>
+</main>
+</div><div class="toast" id="toast"></div>
+<script>
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+const titles={chat:"ChatGPT",projects:"Projects",explore:"สำรวจ GPTs",settings:"การตั้งค่า"};
+function toast(t){const el=$("#toast");el.textContent=t;el.classList.add("show");setTimeout(()=>el.classList.remove("show"),2200)}
+function showPage(name){$$(".page").forEach(p=>p.classList.toggle("active",p.id==="page-"+name));$$(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===name));$("#topTitle").textContent=titles[name]||"ChatGPT";$("#composerWrap").style.display=name==="chat"?"block":"none";$("#sidebar").classList.remove("open")}
+$$(".nav button").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+$("#menuBtn").addEventListener("click",()=>$("#sidebar").classList.toggle("open"));
+$("#newChat").addEventListener("click",()=>{$("#messages").innerHTML="";$("#prompt").value="";showPage("chat");toast("เริ่มแชตใหม่แล้ว")});
+$("#chatSearch").addEventListener("input",e=>{const q=e.target.value.toLowerCase();$$(".chatitem").forEach(b=>b.style.display=b.dataset.title.toLowerCase().includes(q)?"flex":"none")});
+function addMessage(text,isUser){const row=document.createElement("div");row.className="msg"+(isUser?" user":"");const bubble=document.createElement("div");bubble.className="bubble";bubble.textContent=text;if(isUser){row.appendChild(bubble)}else{const av=document.createElement("div");av.className="avatar";av.textContent="✳";row.append(av,bubble)}$("#messages").appendChild(row);row.scrollIntoView({behavior:"smooth",block:"nearest"})}
+$("#composer").addEventListener("submit",e=>{e.preventDefault();const input=$("#prompt"),v=input.value.trim();if(!v)return;addMessage(v,true);input.value="";setTimeout(()=>addMessage("นี่เป็นต้นแบบหน้าตาเท่านั้น ยังไม่ได้เชื่อมต่อ AI จริง แต่ช่องแชตและการจัดวางทำงานได้แล้ว หากต้องการตอบกลับด้วย AI ต้องเชื่อมต่อ API ในขั้นต่อไป",false),250)});
+$$(".suggest").forEach(b=>b.addEventListener("click",()=>{showPage("chat");$("#prompt").value=b.dataset.prompt;$("#prompt").focus()}));
+$$(".chatitem").forEach(b=>b.addEventListener("click",()=>{showPage("chat");addMessage("เปิดพื้นที่: "+b.dataset.title,false)}));
+$$(".swatch").forEach(b=>b.addEventListener("click",()=>{$(":root").style.setProperty("--purple",b.dataset.color);$$(".swatch").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");toast("เปลี่ยนสีเน้นแล้ว")}));
+let glow=true;$("#glowBtn").addEventListener("click",()=>{glow=!glow;document.body.style.background=glow?"radial-gradient(ellipse at 20% -10%,#2b1550 0,transparent 45%),var(--bg)":"var(--bg)";$("#glowBtn").textContent=glow?"เปิดอยู่ ✓":"ปิดอยู่";toast(glow?"เปิดเอฟเฟกต์แล้ว":"ปิดเอฟเฟกต์แล้ว")});
+$("#themeBtn").addEventListener("click",()=>{document.body.style.setProperty("--bg",getComputedStyle(document.body).getPropertyValue("--bg").trim()==="#0b0812"?"#130d1c":"#0b0812");toast("สลับความเข้มของพื้นหลังแล้ว")});
+$("#plusBtn").addEventListener("click",()=>toast("เมนูเพิ่มเติมเป็นตัวอย่างใน UI เดโม"));
+</script>
+</body>
+</html>
